@@ -11,7 +11,7 @@ class Customer(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='customer')
 	name = models.CharField(max_length=25)
 	bill = models.DecimalField(max_digits=7, decimal_places=2, default=0)
-	table = models.ForeignKey(Table, on_delete=models.CASCADE, related_name='table', default=None)
+	table = models.ForeignKey(Table, on_delete=models.SET_NULL, related_name='table', default=None, null=True, blank=True)
 
 	order = {}
 
