@@ -18,10 +18,10 @@ def signup(request):
 		if request.POST['password1'] == request.POST['password2']:
 			try:
 				user = User.objects.get(username=request.POST['username'])
-				return render(request, 'accounts/signup.html', {'error': 'Username has already been taken'})
+				return render(request, 'restaurant/signup.html', {'error': 'Username has already been taken'})
 			except User.DoesNotExist:
 				user = User.objects.create_user(request.POST['username'], password=request.POST['password1'])
-				cust = Customer.objetcs.create(user=user, name=str(request.POST['username']).title())
+				cust = Customer(user=user, name=str(request.POST['username']).title())
 				cust.save()
 				auth.login(request, user)
 				return redirect('home')
