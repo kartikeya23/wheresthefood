@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>BOOK A TABLE</h1>
+
+<form id="table-form" method="POST">
+	{% csrf_token %}
+	<input type="hidden" name="table-id" id='table-id'>
+</form>
+
+<table class="table table-striped" id="table">
+	<thead class="thead-dark">
+		<tr>
+			<th scope="col">Table_Id</th>
+			<th scope="col">Capacity</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for table in tables %}
+			<tr>
+				<td><a href="javascript:{document.getElementById('table-id').value='{{table.pk}}';document.getElementById('table-form').submit();}">{{ table.pk }}</a></td>
+				<td>{{ table.capacity }}</td>
+			</tr>	
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}

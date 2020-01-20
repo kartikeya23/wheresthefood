@@ -10,7 +10,7 @@ class Table(models.Model):
 class Customer(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='customer')
 	name = models.CharField(max_length=25)
-	bill = models.DecimalField(max_digits=7, decimal_places=2, default=0)
+	# bill = models.DecimalField(max_digits=7, decimal_places=2, default=0)
 	table = models.ForeignKey(Table, on_delete=models.SET_NULL, related_name='table', default=None, null=True, blank=True)
 
 	order = {}
@@ -22,8 +22,11 @@ class Customer(models.Model):
 		total = 0
 		for food in self.order:
 			total += food.price * self.order[food]
-		self.bill = total
-		self.save()
+		return total
+
+
+	bill = property(update_bill)
+
 
 	def add_item(self, item, qty):
 		self.order[item] = qty

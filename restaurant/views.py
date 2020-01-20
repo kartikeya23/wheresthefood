@@ -21,6 +21,8 @@ def signup(request):
 				return render(request, 'accounts/signup.html', {'error': 'Username has already been taken'})
 			except User.DoesNotExist:
 				user = User.objects.create_user(request.POST['username'], password=request.POST['password1'])
+				cust = Customer.objetcs.create(user=user, name=str(request.POST['username']).title())
+				cust.save()
 				auth.login(request, user)
 				return redirect('home')
 		else:
@@ -54,6 +56,18 @@ def logout(request):
 
 @login_required(login_url='/login')
 def book(request):
-	order = request.user.customer.order
-	return render(request, 'restaurant/cart.html', {'items': order})
+	cust = request.user.customer
+	table = cust.table
+	if table == None:
+		if request.method == 'POST':
+			tab_id = request.POST['table-id']
+			table = Table.objects.get(pk=tab_id)
+			cust.table = table
+			table.is_occupied = True
+			cust.save()
+			return redirect('book')
+		return render(request, 'restaurant/table.html', {'tables': Table.objects.filter(is_occupied=False)})
+	if request.method == 'POST':
+		print("We will book stuff here")
+	return render(request, 'restaurant/cart.html', {'order_items': cust.order, 'cap': cust.table.capacity, 'all_items': Item.objects.all()})
 

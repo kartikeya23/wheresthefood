@@ -4,11 +4,11 @@
 
 <h1>CART</h1>
 
-{% for item in items %}
+{% for item, qty in items %}
 	<div class="row pt-3">
-		<h2>{{items[0].name}}</h1>
-		<h3>Qty: {{items[1]}}</h3>
-		<h3>Qty: {{items[0].price}}</h3>
+		<h2>{{items.name}}</h1>
+		<h3>Qty: {{qty}}</h3>
+		<h3>Prc: {{items.price}}</h3>
 	</div>
 {% endfor %}
 
